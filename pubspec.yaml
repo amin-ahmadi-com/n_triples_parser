@@ -1,6 +1,6 @@
 name: n_triples_parser
 description: N-Triples parser for Dart
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/amin-ahmadi-com/n_triples_parser
 
 environment:

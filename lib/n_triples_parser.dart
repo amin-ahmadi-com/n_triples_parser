@@ -89,15 +89,15 @@ class NTriplesParser {
         case ">":
           {
             if (term.termType == NTripleTermType.iri) {
-              term.value = utils.removeLastCharacter(term.value);
+              term.value = utils.removeLastCharacters(term.value, 1);
               result.add(term);
               term = NTripleTerm();
               state = null;
             } else if (term.termType == NTripleTermType.literal &&
                 state == NTripleParserState.parsingDataType) {
-              term.dataType = term.dataType.substring(3);
-              term.dataType = utils.removeLastCharacter(term.dataType);
-              term.value = utils.removeLastCharacter(term.value);
+              term.dataType = utils.removeFirstCharacters(term.dataType, 3);
+              term.dataType = utils.removeLastCharacters(term.dataType, 1);
+              term.value = utils.removeLastCharacters(term.value, 1);
               result.add(term);
               term = NTripleTerm();
               state = null;
@@ -133,7 +133,7 @@ class NTriplesParser {
                 } else if (nextChar == "^" && nextNextChar == "^") {
                   state = NTripleParserState.parsingDataType;
                 } else {
-                  term.value = utils.removeLastCharacter(term.value);
+                  term.value = utils.removeLastCharacters(term.value, 1);
                   result.add(term);
                   term = NTripleTerm();
                   state = null;
@@ -157,16 +157,18 @@ class NTriplesParser {
           {
             if (state == NTripleParserState.parsingTerm &&
                 term.termType == NTripleTermType.blankNode) {
-              term.value = term.value.substring(1);
-              term.value = utils.removeLastCharacter(term.value);
+              term.value = utils.removeFirstCharacters(term.value, 1);
+              term.value = utils.removeLastCharacters(term.value, 1);
               result.add(term);
               term = NTripleTerm();
               state = null;
             } else if (state == NTripleParserState.parsingLanguageTag &&
                 term.termType == NTripleTermType.literal) {
-              term.value = utils.removeLastCharacter(term.value);
-              term.languageTag = utils.removeLastCharacter(term.languageTag);
-              term.languageTag = term.languageTag.substring(1);
+              term.value = utils.removeLastCharacters(term.value, 1);
+              term.languageTag =
+                  utils.removeLastCharacters(term.languageTag, 1);
+              term.languageTag =
+                  utils.removeFirstCharacters(term.languageTag, 1);
               result.add(term);
               term = NTripleTerm();
               state = null;
