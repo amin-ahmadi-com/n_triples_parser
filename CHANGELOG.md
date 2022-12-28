@@ -1,3 +1,7 @@
+## 0.2.1
+
+* Reorganized and documented
+
 ## 0.2.0
 
 * License updated

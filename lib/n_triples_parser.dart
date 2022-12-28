@@ -1,56 +1,53 @@
 library n_triples_parser;
 
-import 'package:tuple/tuple.dart';
-import 'utils.dart' as utils;
+import 'dart:io';
+
 import 'package:characters/characters.dart';
+import 'package:tuple/tuple.dart';
 
-enum NTripleTermType {
-  iri,
-  literal,
-  blankNode,
-}
+import 'n_triple_types.dart';
+import 'utils.dart' as utils;
 
-class NTripleTerm {
-  NTripleTermType? termType;
-  String value;
-  String languageTag;
-  String dataType;
-
-  NTripleTerm({
-    this.termType,
-    this.value = "",
-    this.languageTag = "",
-    this.dataType = "",
-  });
-
-  @override
-  String toString() {
-    return "$termType : $value @$languageTag ^^$dataType";
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is NTripleTerm &&
-        termType == other.termType &&
-        value == other.value &&
-        languageTag == other.languageTag &&
-        dataType == other.dataType;
-  }
-}
-
-typedef NTriple = Tuple3<NTripleTerm, NTripleTerm, NTripleTerm>;
-
-enum NTripleParserState {
-  parsingTerm,
-  parsingDataType,
-  parsingLanguageTag,
-}
-
+/// A simple line-based parser for N-Triples format.
+/// See https://www.w3.org/TR/n-triples/ for more info on N-Triples.
 class NTriplesParser {
+  /// Parses a *.nt file, while reporting on progress.
+  ///
+  /// onProgress parameter sends the index (0-based) of current line along with
+  /// total number of lines.
+  static Iterable<NTriple> parseFile(
+    String path, {
+    Function(int, int)? onProgress,
+  }) {
+    return parseLines(
+      File(path).readAsLinesSync(),
+      onProgress: onProgress,
+    );
+  }
+
+  /// Parses series of lines containing N-Triples, while reporting on the progress.
+  ///
+  /// onProgress parameter sends the index (0-based) of current line along with
+  /// total number of lines.
+  static Iterable<NTriple> parseLines(
+    Iterable<String> lines, {
+    Function(int, int)? onProgress,
+  }) {
+    final result = <NTriple>[];
+    for (int i = 0; i < lines.length; i++) {
+      parseLine(lines.elementAt(i));
+      if (onProgress != null) {
+        onProgress(i, lines.length);
+      }
+    }
+    return result;
+  }
+
+  /// Parses a single line containing N-Triple.
   static NTriple parseLine(String text) {
     final result = <NTripleTerm>[];
     var term = NTripleTerm();
-    NTripleParserState? state;
+    _NTriplesParserState? state;
 
     for (int i = 0; i < text.characters.length; i++) {
       final char = text.characters.elementAt(i);
@@ -63,13 +60,13 @@ class NTriplesParser {
           : "";
 
       switch (state) {
-        case NTripleParserState.parsingTerm:
+        case _NTriplesParserState.parsingTerm:
           term.value += char;
           break;
-        case NTripleParserState.parsingDataType:
+        case _NTriplesParserState.parsingDataType:
           term.dataType += char;
           break;
-        case NTripleParserState.parsingLanguageTag:
+        case _NTriplesParserState.parsingLanguageTag:
           term.languageTag += char;
           break;
         case null:
@@ -81,7 +78,7 @@ class NTriplesParser {
           {
             if (state == null) {
               term = NTripleTerm(termType: NTripleTermType.iri);
-              state = NTripleParserState.parsingTerm;
+              state = _NTriplesParserState.parsingTerm;
             }
           }
           break;
@@ -94,7 +91,7 @@ class NTriplesParser {
               term = NTripleTerm();
               state = null;
             } else if (term.termType == NTripleTermType.literal &&
-                state == NTripleParserState.parsingDataType) {
+                state == _NTriplesParserState.parsingDataType) {
               term.dataType = utils.removeFirstCharacters(term.dataType, 3);
               term.dataType = utils.removeLastCharacters(term.dataType, 1);
               term.value = utils.removeLastCharacters(term.value, 1);
@@ -125,13 +122,13 @@ class NTriplesParser {
           {
             if (state == null) {
               term = NTripleTerm(termType: NTripleTermType.literal);
-              state = NTripleParserState.parsingTerm;
+              state = _NTriplesParserState.parsingTerm;
             } else if (term.termType == NTripleTermType.literal) {
               if (prevChar != "\\") {
                 if (nextChar == "@") {
-                  state = NTripleParserState.parsingLanguageTag;
+                  state = _NTriplesParserState.parsingLanguageTag;
                 } else if (nextChar == "^" && nextNextChar == "^") {
-                  state = NTripleParserState.parsingDataType;
+                  state = _NTriplesParserState.parsingDataType;
                 } else {
                   term.value = utils.removeLastCharacters(term.value, 1);
                   result.add(term);
@@ -147,7 +144,7 @@ class NTriplesParser {
           {
             if (state == null && nextChar == ":") {
               term = NTripleTerm(termType: NTripleTermType.blankNode);
-              state = NTripleParserState.parsingTerm;
+              state = _NTriplesParserState.parsingTerm;
             }
           }
           break;
@@ -155,14 +152,14 @@ class NTriplesParser {
         case " ":
         case "\t":
           {
-            if (state == NTripleParserState.parsingTerm &&
+            if (state == _NTriplesParserState.parsingTerm &&
                 term.termType == NTripleTermType.blankNode) {
               term.value = utils.removeFirstCharacters(term.value, 1);
               term.value = utils.removeLastCharacters(term.value, 1);
               result.add(term);
               term = NTripleTerm();
               state = null;
-            } else if (state == NTripleParserState.parsingLanguageTag &&
+            } else if (state == _NTriplesParserState.parsingLanguageTag &&
                 term.termType == NTripleTermType.literal) {
               term.value = utils.removeLastCharacters(term.value, 1);
               term.languageTag =
@@ -182,4 +179,10 @@ class NTriplesParser {
 
     return Tuple3(result[0], result[1], result[2]);
   }
+}
+
+enum _NTriplesParserState {
+  parsingTerm,
+  parsingDataType,
+  parsingLanguageTag,
 }
