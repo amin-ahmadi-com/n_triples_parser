@@ -1,3 +1,7 @@
+## 0.2.0
+
+* License updated
+
 ## 0.1.1
 
 * Updated a few utils
