@@ -1,5 +1,3 @@
-library n_triples_parser;
-
 import 'package:tuple/tuple.dart';
 
 /// This enum defines possible types of an N-Triple term.

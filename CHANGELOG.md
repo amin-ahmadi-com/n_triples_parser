@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Fixed minor pub.dev related doc issue
+
 ## 0.2.2
 
 * Fixed a couple of minor pub.dev related doc issues
