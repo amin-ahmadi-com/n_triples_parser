@@ -1,3 +1,4 @@
-## 0.0.1
+## 0.1.0
 
-* TODO: Describe initial release.
+* Initial version
+* Just supporting the basics (parsing of a single line)
