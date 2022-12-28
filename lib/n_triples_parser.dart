@@ -1,3 +1,4 @@
+/// Parse N-Triples (*.nt) files, or lines of text containing N-Triples
 library n_triples_parser;
 
 import 'dart:io';
