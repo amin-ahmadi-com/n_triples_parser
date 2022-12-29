@@ -39,10 +39,10 @@ class NTriplesParser {
     for (int i = 0; i < lines.length; i++) {
       final nt = parseLine(lines.elementAt(i));
       if (onProgress != null) {
-        onProgress(i, lines.length);
+        await Future.delayed(Duration(), () => onProgress(i, lines.length));
       }
       if (onLineParsed != null) {
-        onLineParsed(nt);
+        await Future.delayed(Duration(), () => onLineParsed(nt));
       }
     }
   }

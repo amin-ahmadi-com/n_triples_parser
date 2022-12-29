@@ -1,3 +1,7 @@
+## 0.2.6
+
+* Using Future.delayed() for UI updates to work
+
 ## 0.2.5
 
 * Switch to async
