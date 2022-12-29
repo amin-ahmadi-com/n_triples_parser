@@ -1,3 +1,8 @@
+## 0.2.4
+
+* Minor bug fixes
+* Progress report improved
+
 ## 0.2.3
 
 * Fixed minor pub.dev related doc issue

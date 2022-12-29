@@ -15,13 +15,15 @@ class NTriplesParser {
   ///
   /// onProgress parameter sends the index (0-based) of current line along with
   /// total number of lines.
-  static Iterable<NTriple> parseFile(
+  static void parseFile(
     String path, {
-    Function(int, int)? onProgress,
+    Function(int current, int total)? onProgress,
+    Function(NTriple nt)? onLineParsed,
   }) {
-    return parseLines(
+    parseLines(
       File(path).readAsLinesSync(),
       onProgress: onProgress,
+      onLineParsed: onLineParsed,
     );
   }
 
@@ -29,18 +31,20 @@ class NTriplesParser {
   ///
   /// onProgress parameter sends the index (0-based) of current line along with
   /// total number of lines.
-  static Iterable<NTriple> parseLines(
+  static void parseLines(
     Iterable<String> lines, {
-    Function(int, int)? onProgress,
+    Function(int current, int total)? onProgress,
+    Function(NTriple nt)? onLineParsed,
   }) {
-    final result = <NTriple>[];
     for (int i = 0; i < lines.length; i++) {
-      parseLine(lines.elementAt(i));
+      final nt = parseLine(lines.elementAt(i));
       if (onProgress != null) {
         onProgress(i, lines.length);
       }
+      if (onLineParsed != null) {
+        onLineParsed(nt);
+      }
     }
-    return result;
   }
 
   /// Parses a single line containing N-Triple.
