@@ -19,7 +19,7 @@ class NTriplesParser {
     String path, {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
-  }) {
+  }) async {
     parseLines(
       File(path).readAsLinesSync(),
       onProgress: onProgress,
@@ -35,7 +35,7 @@ class NTriplesParser {
     Iterable<String> lines, {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
-  }) {
+  }) async {
     for (int i = 0; i < lines.length; i++) {
       final nt = parseLine(lines.elementAt(i));
       if (onProgress != null) {

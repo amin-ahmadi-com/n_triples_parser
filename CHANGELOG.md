@@ -1,3 +1,7 @@
+## 0.2.5
+
+* Switch to async
+
 ## 0.2.4
 
 * Minor bug fixes
