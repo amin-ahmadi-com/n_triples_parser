@@ -38,6 +38,7 @@ class NTriplesParser {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
+    bool rethrowOnError = true,
   }) async {
     for (int i = 0; i < lines.length; i++) {
       final line = lines.elementAt(i);
@@ -52,6 +53,9 @@ class NTriplesParser {
       } catch (exception) {
         if (onParseError != null) {
           await Future.delayed(Duration(), () => onParseError(line, exception));
+        }
+        if (rethrowOnError) {
+          throw exception;
         }
       }
     }
