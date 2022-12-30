@@ -20,12 +20,14 @@ class NTriplesParser {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
+    bool rethrowOnError = true,
   }) async {
     parseLines(
       File(path).readAsLinesSync(),
       onProgress: onProgress,
       onLineParsed: onLineParsed,
       onParseError: onParseError,
+      rethrowOnError: rethrowOnError,
     );
   }
 

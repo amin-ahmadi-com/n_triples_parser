@@ -1,3 +1,7 @@
+## 0.2.9
+
+* Better error handling
+
 ## 0.2.8
 
 * Better error handling
