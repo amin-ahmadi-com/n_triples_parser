@@ -19,11 +19,13 @@ class NTriplesParser {
     String path, {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
+    Function(String line, Object exception)? onParseError,
   }) async {
     parseLines(
       File(path).readAsLinesSync(),
       onProgress: onProgress,
       onLineParsed: onLineParsed,
+      onParseError: onParseError,
     );
   }
 
@@ -35,14 +37,22 @@ class NTriplesParser {
     Iterable<String> lines, {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
+    Function(String line, Object exception)? onParseError,
   }) async {
     for (int i = 0; i < lines.length; i++) {
-      final nt = parseLine(lines.elementAt(i));
-      if (onProgress != null) {
-        await Future.delayed(Duration(), () => onProgress(i, lines.length));
-      }
-      if (onLineParsed != null) {
-        await Future.delayed(Duration(), () => onLineParsed(nt));
+      final line = lines.elementAt(i);
+      try {
+        final nt = parseLine(line);
+        if (onProgress != null) {
+          await Future.delayed(Duration(), () => onProgress(i, lines.length));
+        }
+        if (onLineParsed != null) {
+          await Future.delayed(Duration(), () => onLineParsed(nt));
+        }
+      } catch (exception) {
+        if (onParseError != null) {
+          await Future.delayed(Duration(), () => onParseError(line, exception));
+        }
       }
     }
   }

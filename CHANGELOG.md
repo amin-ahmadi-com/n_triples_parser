@@ -1,3 +1,7 @@
+## 0.2.7
+
+* Handling parse errors
+
 ## 0.2.6
 
 * Using Future.delayed() for UI updates to work
