@@ -21,6 +21,7 @@ class NTriplesParser {
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
     bool rethrowOnError = true,
+    int startingIndex = 0,
   }) async {
     parseLines(
       File(path).readAsLinesSync(),
@@ -28,6 +29,7 @@ class NTriplesParser {
       onLineParsed: onLineParsed,
       onParseError: onParseError,
       rethrowOnError: rethrowOnError,
+      startingIndex: startingIndex,
     );
   }
 
@@ -41,8 +43,9 @@ class NTriplesParser {
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
     bool rethrowOnError = true,
+    int startingIndex = 0,
   }) async {
-    for (int i = 0; i < lines.length; i++) {
+    for (int i = startingIndex; i < lines.length; i++) {
       final line = lines.elementAt(i);
       try {
         final nt = parseLine(line);
