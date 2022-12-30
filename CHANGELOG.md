@@ -1,3 +1,7 @@
+## 0.2.11
+
+* Fixed a bug related to literals ending with \\
+
 ## 0.2.10
 
 * Support for starting index

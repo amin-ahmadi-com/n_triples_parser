@@ -75,6 +75,7 @@ class NTriplesParser {
     for (int i = 0; i < text.characters.length; i++) {
       final char = text.characters.elementAt(i);
       final prevChar = i > 0 ? text.characters.elementAt(i - 1) : "";
+      final prevPrevChar = i > 1 ? text.characters.elementAt(i - 2) : "";
       final nextChar = i < text.characters.length - 2
           ? text.characters.elementAt(i + 1)
           : "";
@@ -141,13 +142,13 @@ class NTriplesParser {
           }
           break;
 
-        case "\"":
+        case '"':
           {
             if (state == null) {
               term = NTripleTerm(termType: NTripleTermType.literal);
               state = _NTriplesParserState.parsingTerm;
             } else if (term.termType == NTripleTermType.literal) {
-              if (prevChar != "\\") {
+              if (prevChar != r"\" || (prevChar == prevPrevChar)) {
                 if (nextChar == "@") {
                   state = _NTriplesParserState.parsingLanguageTag;
                 } else if (nextChar == "^" && nextNextChar == "^") {

@@ -187,4 +187,31 @@ void main() {
           ),
         ));
   });
+
+  test('Literal ending with double backslashes', () {
+    const line = ''
+        '<http://id.nlm.nih.gov/mesh/2022/C000614727> '
+        '<http://id.nlm.nih.gov/mesh/vocab#source> '
+        '"Nat Rev Drug Discov. 2016 Nov 29;15(12):820-1.\\\\"@en '
+        '.';
+
+    final result = NTriplesParser.parseLine(line);
+    expect(
+        result,
+        Tuple3(
+          NTripleTerm(
+            termType: NTripleTermType.iri,
+            value: "http://id.nlm.nih.gov/mesh/2022/C000614727",
+          ),
+          NTripleTerm(
+            termType: NTripleTermType.iri,
+            value: "http://id.nlm.nih.gov/mesh/vocab#source",
+          ),
+          NTripleTerm(
+            termType: NTripleTermType.literal,
+            value: "Nat Rev Drug Discov. 2016 Nov 29;15(12):820-1.\\\\",
+            languageTag: "en",
+          ),
+        ));
+  });
 }
