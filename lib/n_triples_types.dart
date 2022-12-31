@@ -40,7 +40,7 @@ class NTripleTerm {
         dataType == other.dataType;
   }
 
-  String get sha256Digest {
+  String get hashDigest {
     return sha256.convert("$this".codeUnits).toString();
   }
 }

@@ -1,3 +1,7 @@
+## 0.2.13
+
+* generic hash name
+
 ## 0.2.12
 
 * sha256 digest added

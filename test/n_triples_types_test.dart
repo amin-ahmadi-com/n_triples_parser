@@ -16,7 +16,7 @@ void main() {
     );
   });
 
-  test("sha256Digest", () {
+  test("hashDigest", () {
     final term = NTripleTerm(
       termType: NTripleTermType.iri,
       value: "https://amin-ahmadi.com",
@@ -25,12 +25,12 @@ void main() {
     );
 
     final stopwatch = Stopwatch()..start();
-    final result = term.sha256Digest;
+    final result = term.hashDigest;
     print(
-      'sha256Digest took ${stopwatch.elapsed.inMicroseconds} microseconds.',
+      'hashDigest took ${stopwatch.elapsed.inMicroseconds} microseconds.',
     );
 
-    // To compare, sha256Digest result was generated on https://emn178.github.io/online-tools/sha256.html
+    // To compare, hashDigest result was generated on https://emn178.github.io/online-tools/sha256.html
     // Using input string: NTripleTermType.iri : https://amin-ahmadi.com @en ^^S
     expect(
       result,
