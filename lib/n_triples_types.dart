@@ -1,3 +1,4 @@
+import 'package:crypto/crypto.dart';
 import 'package:tuple/tuple.dart';
 
 /// This enum defines possible types of an N-Triple term.
@@ -37,6 +38,10 @@ class NTripleTerm {
         value == other.value &&
         languageTag == other.languageTag &&
         dataType == other.dataType;
+  }
+
+  String get sha256Digest {
+    return sha256.convert("$this".codeUnits).toString();
   }
 }
 
