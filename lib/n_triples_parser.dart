@@ -20,6 +20,7 @@ class NTriplesParser {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
+    Function()? onFinished,
     bool rethrowOnError = true,
     int startingIndex = 0,
   }) async {
@@ -28,6 +29,7 @@ class NTriplesParser {
       onProgress: onProgress,
       onLineParsed: onLineParsed,
       onParseError: onParseError,
+      onFinished: onFinished,
       rethrowOnError: rethrowOnError,
       startingIndex: startingIndex,
     );
@@ -42,6 +44,7 @@ class NTriplesParser {
     Function(int current, int total)? onProgress,
     Function(NTriple nt)? onLineParsed,
     Function(String line, Object exception)? onParseError,
+    Function()? onFinished,
     bool rethrowOnError = true,
     int startingIndex = 0,
   }) async {
@@ -63,6 +66,10 @@ class NTriplesParser {
           throw exception;
         }
       }
+    }
+
+    if (onFinished != null) {
+      await Future.delayed(Duration(), () => onFinished());
     }
   }
 

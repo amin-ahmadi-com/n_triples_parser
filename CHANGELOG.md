@@ -1,3 +1,7 @@
+## 0.2.15
+
+* onFinished signal
+
 ## 0.2.14
 
 * Revert sha256 related stuff
