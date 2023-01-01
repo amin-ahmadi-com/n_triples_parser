@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:characters/characters.dart';
 import 'package:tuple/tuple.dart';
 
-import 'n_triples_types.dart';
+import 'n_triple_types.dart';
 import 'utils.dart' as utils;
 
 /// A simple line-based parser for N-Triples format.

@@ -1,7 +1,3 @@
-## 0.2.12
-
-* sha256 digest added
-
 ## 0.2.11
 
 * Fixed a bug related to literals ending with \\

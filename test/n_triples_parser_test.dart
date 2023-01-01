@@ -1,4 +1,4 @@
-import 'package:n_triples_parser/n_triples_types.dart';
+import 'package:n_triples_parser/n_triple_types.dart';
 import 'package:n_triples_parser/n_triples_parser.dart';
 import 'package:test/test.dart';
 import 'package:tuple/tuple.dart';
