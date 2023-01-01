@@ -1,3 +1,7 @@
+## 0.2.14
+
+* Revert sha256 related stuff
+
 ## 0.2.11
 
 * Fixed a bug related to literals ending with \\
