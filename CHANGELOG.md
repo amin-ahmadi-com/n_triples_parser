@@ -1,3 +1,7 @@
+## 0.3.0
+
+* License fixed/updated
+
 ## 0.2.15
 
 * onFinished signal
