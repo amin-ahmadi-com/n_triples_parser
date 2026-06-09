@@ -10,5 +10,5 @@ To use this package, add `n_triples_parser` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  n_triples_parser: ^0.3.0
+  n_triples_parser: ^0.3.1
 ```

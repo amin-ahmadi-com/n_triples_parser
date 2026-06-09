@@ -1,3 +1,7 @@
+## 0.3.1
+
+* Updated dependencies to Dart 3.x
+
 ## 0.3.0
 
 * License fixed/updated
